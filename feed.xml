@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+    <title>Atharva&#x27;s Blog</title>
+    <link href="https://Atharva-Attarde.github.io/feed.xml" rel="self" />
+    <link href="https://Atharva-Attarde.github.io" />
+    <updated>2025-07-16T14:55:39+05:30</updated>
+    <author>
+        <name>Atharva Attarde</name>
+    </author>
+    <id>https://Atharva-Attarde.github.io</id>
+
+    <entry>
+        <title>Hello</title>
+        <author>
+            <name>Atharva Attarde</name>
+        </author>
+        <link href="https://Atharva-Attarde.github.io/hello.html"/>
+        <id>https://Atharva-Attarde.github.io/hello.html</id>
+
+        <updated>2025-07-16T14:55:39+05:30</updated>
+            <summary></summary>
+        <content type="html">
+            <![CDATA[
+                
+  <p>
+    
+  </p>
+            ]]>
+        </content>
+    </entry>
+</feed>

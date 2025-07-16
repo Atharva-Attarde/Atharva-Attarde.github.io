@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://Atharva-Attarde.github.io/sitemap.xml
