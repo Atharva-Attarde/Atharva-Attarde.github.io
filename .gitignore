@@ -1,29 +1,6 @@
-# Dependencies
-node_modules/
-package-lock.json
-
-# OS files
-.DS_Store
-Thumbs.db
-*.log
-
-# Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Build/cache
-.cache/
-dist/
-build/
-
-# Environment
-.env
-.env.local
-.env.*.local
-
-# Archive files
-*.zip
-*.tar.gz
+_site/
+.sass-cache/
+.jekyll-metadata
+garth-jekyll-theme-*.gem
+Gemfile.lock
+**/Gemfile.lock
