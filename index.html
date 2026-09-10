@@ -1,12 +1,70 @@
 ---
 layout: home
-collectionpage: posts
 ---
 
-{% include lecturelens-demo.html %}
-
-<div style="text-align: right; margin-bottom: 24px;">
-  <a href="{{ '/lecturelens/' | relative_url }}" style="font-weight: bold; color: #2563eb; text-decoration: none;">
-    Read full LectureLens project architecture &amp; CLI docs &rarr;
-  </a>
+<!-- Hero / About Intro Section -->
+<div class="intro-header" style="margin-bottom: 30px;">
+  <h1 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 6px; color: #0f172a;">Atharva Attarde</h1>
+  <p style="font-size: 1.15rem; color: #334155; margin: 0 0 12px 0; line-height: 1.5;">
+    PhD Student at <strong>Indian Institute of Science (IISc)</strong><br>
+    <span style="color: #475569;">BioMedIA Lab, Department of Computational and Data Sciences (CDS)</span>
+  </p>
+  <p style="font-size: 0.98rem; color: #64748b; line-height: 1.6; max-width: 760px; margin-bottom: 16px;">
+    Research in multimodal machine learning, vision-language models, biomedical image analysis, and digital signal processing.
+  </p>
+  <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.92rem;">
+    <a href="https://github.com/Atharva-Attarde" target="_blank" rel="noopener" style="color: #2563eb; font-weight: 600; text-decoration: none;">GitHub ↗</a>
+    <a href="{{ '/about/' | relative_url }}" style="color: #2563eb; font-weight: 600; text-decoration: none;">About Me &rarr;</a>
+    <a href="#projects" style="color: #2563eb; font-weight: 600; text-decoration: none;">Projects &amp; Demos &darr;</a>
+  </div>
 </div>
+
+<hr style="margin: 25px 0 35px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+<div id="projects">
+  <!-- Section 1: LectureLens -->
+  <section style="margin-bottom: 45px;">
+    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; color: #0f172a;">LectureLens</h2>
+    <p style="font-size: 1rem; color: #475569; margin: 0 0 16px 0; line-height: 1.5;">
+      A Vision-LLM powered STEM audiobook generator that parses complex multi-column papers and equations into spoken, professor-guided lectures.
+    </p>
+
+    {% include lecturelens-demo.html %}
+
+    <div style="margin-top: 12px; font-size: 0.92rem;">
+      <a href="{{ '/lecturelens/' | relative_url }}" style="font-weight: 600; color: #2563eb; text-decoration: none;">
+        Read Technical Documentation &amp; CLI Guide &rarr;
+      </a>
+      &nbsp;|&nbsp;
+      <a href="https://github.com/Atharva-Attarde/LectureLens" target="_blank" rel="noopener" style="font-weight: 600; color: #2563eb; text-decoration: none;">
+        GitHub Repository ↗
+      </a>
+    </div>
+  </section>
+
+  <hr style="margin: 35px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+  <!-- Section 2: Signal Amplitude Distribution Simulator -->
+  <section style="margin-bottom: 45px;">
+    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; color: #0f172a;">Signal Amplitude Distribution Simulator</h2>
+    <p style="font-size: 1rem; color: #475569; margin: 0 0 16px 0; line-height: 1.5;">
+      Real-time interactive tool demonstrating how continuous waveforms map into amplitude probability density functions (PDF) and discrete histograms.
+    </p>
+
+    {% include sampling-histogram-demo.html %}
+
+    <div style="margin-top: 12px; font-size: 0.92rem;">
+      <a href="{{ '/sampling-histogram/' | relative_url }}" style="font-weight: 600; color: #2563eb; text-decoration: none;">
+        Mathematical Derivation &amp; DSP Theory &rarr;
+      </a>
+      &nbsp;|&nbsp;
+      <a href="{{ '/assets/Samplpling_histogra.html' | relative_url }}" target="_blank" rel="noopener" style="font-weight: 600; color: #2563eb; text-decoration: none;">
+        Open Fullscreen HTML Demo ↗
+      </a>
+    </div>
+  </section>
+</div>
+
+
+
+

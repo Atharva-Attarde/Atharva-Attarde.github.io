@@ -1,16 +1,10 @@
 <nav class="nav">
   <ul class="list list--nav">
-    {% for item in site.pages %}
-      {% unless item.title == false or item.url contains "/page" or item.url contains "/404.html" or item.url contains "/feed." %}
-        <li class="item  item--nav{% if item.url == page.url %}  item--current{% endif %}">
-          {% if item.collectionpage %}
-            {% assign collectiondata = site.collections | where: "label", item.collectionpage | first %}
-            <a href="{{ site.baseurl }}{{ item.url }}">{{ collectiondata.title }}</a>
-          {% else %}
-            <a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
-          {% endif %}
-        </li>
-      {% endunless %}
-    {% endfor %}
+    <li class="item item--nav"><a href="{{ site.baseurl }}/">Home</a></li>
+    <li class="item item--nav"><a href="{{ site.baseurl }}/#featured-projects">Projects</a></li>
+    <li class="item item--nav"><a href="{{ site.baseurl }}/lecturelens/">LectureLens</a></li>
+    <li class="item item--nav"><a href="{{ site.baseurl }}/sampling-histogram/">Signal Simulator</a></li>
+    <li class="item item--nav"><a href="{{ site.baseurl }}/about/">About</a></li>
+    <li class="item item--nav"><a href="https://github.com/Atharva-Attarde" target="_blank" rel="noopener">GitHub ↗</a></li>
   </ul>
 </nav>

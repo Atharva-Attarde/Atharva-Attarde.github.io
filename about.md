@@ -1,40 +1,39 @@
 ---
-title: About Garth
+layout: page
+title: "About"
+permalink: /about/
 ---
 
-A really basic theme for Jekyll, using the official Jekyll theme implementation.
+### Atharva Attarde
 
-- [Fork on GitHub](https://github.com/daviddarnes/garth)
-- [Install Garth](https://github.com/daviddarnes/garth#installation)
+I am a **PhD Student** in the **[BioMedIA Lab](http://cds.iisc.ac.in/)**, Department of **Computational and Data Sciences (CDS)** at the **Indian Institute of Science (IISc), Bangalore**.
 
-[<img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" width="217"/>](https://buymeacoffee.com/daviddarnes#support)
+---
 
-## Installation
+### Research Interests
+* **Multimodal Machine Learning &amp; Vision-Language Models (VLMs)**
+* **Biomedical Image Analysis &amp; Visual Computing**
+* **Digital Signal &amp; Image Processing**
+* **Edge AI &amp; Local Inference Systems**
 
-### As a Jekyll theme
+---
 
-1. Add `gem "garth-jekyll-theme"` to your `Gemfile` to add the theme as a dependancy
-2. Run the command `bundle install` in the root of project to install the theme and its dependancies
-3. Add `theme: garth-jekyll-theme` to your `_config.yml` file to set the site theme
-4. Run `bundle exec jekyll serve` to build and serve your site
-5. Done! Use the example [`_config.yml`](https://github.com/daviddarnes/garth/blob/master/_config.yml) file to set site-wide options
+### Projects &amp; Software
+* **[LectureLens](https://github.com/Atharva-Attarde/LectureLens):** Vision-LLM powered STEM audiobook generator turning complex multi-column papers and equations into spoken lectures.
+* **[Signal Amplitude Distribution Simulator]({{ '/sampling-histogram/' | relative_url }}):** Real-time interactive simulation mapping continuous waveforms into amplitude probability density functions (PDF) and histograms.
 
-### As a GitHub Pages remote theme
+---
 
-1. Add `gem "jekyll-remote-theme"` to your `Gemfile` to add the theme as a dependancy
-2. Run the command `bundle install` in the root of project to install the jekyll remote theme gem as a dependancy
-3. Add `jekyll-remote-theme` to the list of `plugins` in your `_config.yml` file
-4. Add `remote_theme: daviddarnes/garth` to your `_config.yml` file to set the site theme
-5. Run `bundle exec jekyll serve` to build and serve your site
-6. Done! Use the example [`_config.yml`](https://github.com/daviddarnes/garth/blob/master/_config.yml) file to set site-wide options
+### Contact &amp; Links
+* **Department:** Computational and Data Sciences (CDS), Indian Institute of Science (IISc), Bangalore
+* **GitHub:** [github.com/Atharva-Attarde](https://github.com/Atharva-Attarde)
+* **Website:** [Atharva-Attarde.github.io](https://Atharva-Attarde.github.io)
 
-### As a Boilerplate / Fork
+---
 
-_(deprecated, not recommended)_
+<p style="margin-top: 30px;">
+  <a href="{{ '/' | relative_url }}" style="color: #2563eb; font-weight: 600; text-decoration: none;">
+    &larr; Back to Home
+  </a>
+</p>
 
-1. [Fork the repo](https://github.com/daviddarnes/garth#fork-destination-box)
-2. Replace the `Gemfile` with one stating all the gems used in your project
-3. Delete the following unnecessary files/folders: `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `LICENSE`, `screenshot.png`, `CNAME` and `garth-jekyll-theme.gemspec`
-4. Run the command `bundle install` in the root of project to install the jekyll remote theme gem as a dependancy
-5. Run `bundle exec jekyll serve` to build and serve your site
-6. Done! Use the example [`_config.yml`](https://github.com/daviddarnes/garth/blob/master/_config.yml) file to set site-wide options

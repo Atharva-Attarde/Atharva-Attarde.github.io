@@ -1,0 +1,413 @@
+<!-- Signal Amplitude Distribution Simulator Component -->
+<div class="sim-demo-card">
+  <div class="sim-demo-header">
+    <h3 class="sim-demo-title" style="margin: 0 0 6px 0;">Signal Amplitude Distribution &amp; Histogram Simulator</h3>
+    <p class="sim-demo-subtitle">
+      Real-time visualization of continuous time-domain signals mapping to amplitude probability distributions.
+    </p>
+  </div>
+
+
+  <div class="sim-controls-bar">
+    <div class="sim-btn-group">
+      <button type="button" id="sim-btn-sine" class="sim-btn active" onclick="simSetSignal('sine')">🌊 Sine Wave</button>
+      <button type="button" id="sim-btn-triangle" class="sim-btn" onclick="simSetSignal('triangle')">📐 Triangle Wave</button>
+      <button type="button" id="sim-btn-gaussian" class="sim-btn" onclick="simSetSignal('gaussian')">🎲 Gaussian Noise</button>
+    </div>
+    <div class="sim-action-group">
+      <button type="button" class="sim-btn-reset" onclick="simResetData()">🔄 Reset Bins</button>
+      <a href="{{ '/assets/Samplpling_histogra.html' | relative_url }}" target="_blank" class="sim-btn-standalone" title="Open standalone full-window simulator">Fullscreen ↗</a>
+    </div>
+  </div>
+
+  <div class="sim-canvas-wrapper">
+    <canvas id="simInteractiveCanvas" width="900" height="420"></canvas>
+  </div>
+
+  <div class="sim-explanation-grid">
+    <div class="sim-card-insight">
+      <div class="sim-card-icon">💡</div>
+      <div class="sim-card-text">
+        <strong>How it Works:</strong>
+        The white tracer rides the time-domain waveform on the left. At steady intervals, it emits sample particles that fly horizontally toward the histogram wall on the right, dynamically stacking into discrete amplitude bins.
+      </div>
+    </div>
+    <div class="sim-card-insight">
+      <div class="sim-card-icon">📈</div>
+      <div class="sim-card-text">
+        <strong>Mathematical Intuition:</strong>
+        <strong>Sine Wave:</strong> Spends the most time near its peaks (where slope $dy/dt \approx 0$), producing a "U-shaped" bi-modal distribution.<br>
+        <strong>Triangle:</strong> Linear constant slope ($|dy/dt| = c$), resulting in a uniform distribution.<br>
+        <strong>Gaussian:</strong> Standard normal distribution forming the bell curve.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('simInteractiveCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // Layout boundaries
+  const waveX = 40, waveW = 380;
+  const histX = 520, histW = 340;
+  const centerY = 210, amplitudeRange = 160;
+
+  let currentSignal = 'sine';
+  let simTime = 0;
+  let bins = new Array(40).fill(0);
+  let maxBinCount = 1;
+  let particles = [];
+  let waveHistory = [];
+  let animId = null;
+
+  window.simSetSignal = function(type) {
+    currentSignal = type;
+    const btnIds = ['sim-btn-sine', 'sim-btn-triangle', 'sim-btn-gaussian'];
+    btnIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('active');
+    });
+    const activeEl = document.getElementById(`sim-btn-${type}`);
+    if (activeEl) activeEl.classList.add('active');
+    window.simResetData();
+  };
+
+  window.simResetData = function() {
+    bins.fill(0);
+    maxBinCount = 1;
+    particles = [];
+    waveHistory = [];
+  };
+
+  function getSignalValue(t) {
+    if (currentSignal === 'sine') {
+      return Math.sin(t * 0.03);
+    } else if (currentSignal === 'triangle') {
+      return (Math.abs((t * 0.015 % 4) - 2) - 1);
+    } else if (currentSignal === 'gaussian') {
+      let u = 0, v = 0;
+      while (u === 0) u = Math.random();
+      while (v === 0) v = Math.random();
+      let val = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+      return val * 0.35;
+    }
+    return 0;
+  }
+
+  function renderFrame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    simTime += 2;
+
+    let currentVal = getSignalValue(simTime);
+    let currentY = centerY - (currentVal * amplitudeRange);
+
+    // Maintain signal history
+    waveHistory.push({ x: waveX + waveW, y: currentY });
+    if (waveHistory.length > waveW) waveHistory.shift();
+    for (let i = 0; i < waveHistory.length; i++) {
+      waveHistory[i].x -= 1;
+    }
+
+    // Baselines
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(waveX, centerY); ctx.lineTo(waveX + waveW, centerY);
+    ctx.moveTo(histX, centerY); ctx.lineTo(histX + histW, centerY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Draw Continuous Wave
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let i = 0; i < waveHistory.length; i++) {
+      if (i === 0) ctx.moveTo(waveHistory[i].x, waveHistory[i].y);
+      else ctx.lineTo(waveHistory[i].x, waveHistory[i].y);
+    }
+    ctx.stroke();
+
+    // Tracking dot
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(waveX + waveW, currentY, 6, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Spawn Particles
+    if (simTime % 4 === 0) {
+      particles.push({
+        x: waveX + waveW,
+        y: currentY,
+        val: currentVal,
+        speed: 16
+      });
+    }
+
+    // Move & Render Particles
+    ctx.fillStyle = '#f43f5e';
+    for (let i = particles.length - 1; i >= 0; i--) {
+      let p = particles[i];
+      p.x += p.speed;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (p.x >= histX) {
+        let binIndex = Math.floor(((p.val + 1.2) / 2.4) * bins.length);
+        if (binIndex >= 0 && binIndex < bins.length) {
+          bins[binIndex]++;
+          if (bins[binIndex] > maxBinCount) maxBinCount = bins[binIndex];
+        }
+        particles.splice(i, 1);
+      }
+    }
+
+    // Histogram Bars
+    let binHeight = (amplitudeRange * 2.4) / bins.length;
+    ctx.fillStyle = '#fb923c';
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i < bins.length; i++) {
+      let yPos = centerY + amplitudeRange * 1.2 - (i * binHeight) - binHeight;
+      let barWidth = (bins[i] / maxBinCount) * (histW - 20);
+
+      if (bins[i] > 0) {
+        ctx.fillRect(histX, yPos, barWidth, binHeight - 1);
+        ctx.strokeRect(histX, yPos, barWidth, binHeight - 1);
+      }
+    }
+
+    // Labels & Text details
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText("+1.0 Amplitude", waveX, centerY - amplitudeRange + 15);
+    ctx.fillText("-1.0 Amplitude", waveX, centerY + amplitudeRange - 5);
+    ctx.fillText("Time Domain x(t)", waveX + 5, 25);
+    ctx.fillText("Amplitude PDF / Histogram p(x)", histX + 5, 25);
+
+    animId = requestAnimationFrame(renderFrame);
+  }
+
+  // Handle intersection observer to pause when scrolled out of view
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!animId) renderFrame();
+        } else {
+          if (animId) {
+            cancelAnimationFrame(animId);
+            animId = null;
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(canvas);
+  } else {
+    renderFrame();
+  }
+})();
+</script>
+
+<style>
+.sim-demo-card {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
+  padding: 26px;
+  margin: 28px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #f8fafc;
+}
+
+.sim-demo-header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 16px;
+}
+
+.sim-badge-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.sim-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.sim-badge-primary {
+  background: #1e1b4b;
+  color: #a5b4fc;
+  border: 1px solid #3730a3;
+}
+
+.sim-badge-secondary {
+  background: #064e3b;
+  color: #6ee7b7;
+  border: 1px solid #047857;
+}
+
+.sim-badge-accent {
+  background: #451a03;
+  color: #fcd34d;
+  border: 1px solid #78350f;
+}
+
+.sim-demo-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  color: #f8fafc;
+}
+
+.sim-demo-subtitle {
+  font-size: 1rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.sim-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.sim-btn-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sim-btn {
+  background: #1e293b;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sim-btn:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
+.sim-btn.active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+}
+
+.sim-action-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.sim-btn-reset {
+  background: #334155;
+  color: #f1f5f9;
+  border: 1px solid #475569;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sim-btn-reset:hover {
+  background: #475569;
+}
+
+.sim-btn-standalone {
+  background: transparent;
+  color: #38bdf8;
+  border: 1px solid #0284c7;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.sim-btn-standalone:hover {
+  background: rgba(2, 132, 199, 0.15);
+  color: #7dd3fc;
+}
+
+.sim-canvas-wrapper {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.sim-canvas-wrapper canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sim-explanation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .sim-explanation-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sim-card-insight {
+  display: flex;
+  gap: 12px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.sim-card-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.sim-card-text {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+.sim-card-text strong {
+  color: #f1f5f9;
+}
+</style>

@@ -1,10 +1,10 @@
-// Colours
-$bodyColour: #46412A;
-$headingColour: darken($bodyColour, 5%);
-$linkColour: #5B5BFF;
-$hoverColour: darken($linkColour, 10%);
-$captionColour: lighten($headingColour, 40%);
-$white: #fff;
+// Modern, clean color scheme
+$bodyColour: #1e293b;
+$headingColour: #0f172a;
+$linkColour: #2563eb;
+$hoverColour: #1d4ed8;
+$captionColour: #64748b;
+$white: #ffffff;
 
-$backgroundColour: #ffefc8;
-$codeBackgroundColour: darken($backgroundColour, 5%);
+$backgroundColour: #f8fafc;
+$codeBackgroundColour: #f1f5f9;
