@@ -42,21 +42,21 @@ cd LectureLens
 
 # 2. Install dependencies & pull vision model
 pip install -r requirements.txt
-ollama pull qwen3.8:latest
+ollama pull qwen3.5:latest
 
 # 3. Generate page-by-page audio for a textbook chapter
 python lecturelens.py textbook.pdf \
   --per-page \
   --pages "10-61" \
   --offset 23 \
-  --model "qwen3.8:latest" \
+  --model "qwen3.5:latest" \
   --out-dir ./Audiobook/MathChapters
 ```
 
 ---
 
-<p style="text-align: center; margin-top: 30px;">
-  <a href="https://github.com/Atharva-Attarde/LectureLens" class="ll-btn ll-btn-primary" style="font-size: 1rem; padding: 12px 24px;">
+<div style="text-align: center; margin: 36px 0;">
+  <a href="https://github.com/Atharva-Attarde/LectureLens" target="_blank" rel="noopener" class="ll-btn ll-btn-primary" style="font-size: 1rem; padding: 13px 26px; text-decoration: none !important; text-shadow: none !important; background-image: none !important; color: #ffffff !important; background-color: #0f172a !important;">
     ⭐ Explore LectureLens on GitHub
   </a>
-</p>
+</div>

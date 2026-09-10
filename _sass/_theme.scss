@@ -142,8 +142,7 @@ video {
   a > code {
     text-shadow: none;
   }
-  .button,
-  button {
+  .button {
     background-image: none;
     text-shadow: none;
     color: $backgroundColour;
@@ -153,6 +152,18 @@ video {
       background-image: none;
       color: $backgroundColour;
     }
+  }
+  // Ensure custom component buttons and links inside .typeset are never distorted by sassline link underlines or text colors
+  p a.ll-btn,
+  li a.ll-btn,
+  a.ll-btn {
+    background-image: none !important;
+    text-shadow: none !important;
+    text-decoration: none !important;
+  }
+  button.ll-speed-btn,
+  button.ll-time-chip {
+    text-shadow: none !important;
   }
   hr {
     width: 100%;
