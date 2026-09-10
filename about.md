@@ -13,7 +13,7 @@ I am a **PhD Student** in the **[BioMedIA Lab](http://cds.iisc.ac.in/)**, Depart
 ### Research Interests
 * **Multimodal Machine Learning &amp; Vision-Language Models (VLMs)**
 * **Biomedical Image Analysis &amp; Visual Computing**
-* **Digital Signal &amp; Image Processing**
+* **Digital Image Processing**
 * **Edge AI &amp; Local Inference Systems**
 
 ---
