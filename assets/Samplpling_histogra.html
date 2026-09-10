@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signal to Histogram Animation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #111827;
+            color: #f3f4f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        h2 { margin-bottom: 10px; color: #fff; font-weight: 600; }
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        button {
+            background: #374151;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background: #4b5563; }
+        button.active { background: #3b82f6; }
+        #canvas-container {
+            background: #1f2937;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            padding: 15px;
+        }
+        canvas { display: block; background: #0f172a; border-radius: 8px; }
+        .desc {
+            margin-top: 15px;
+            max-width: 800px;
+            text-align: center;
+            font-size: 14px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Signal Amplitude Distribution Simulator</h2>
+    
+    <div class="controls">
+        <button id="sine-btn" class="active" onclick="setSignal('sine')">Sine Wave</button>
+        <button id="triangle-btn" onclick="setSignal('triangle')">Triangle Wave</button>
+        <button id="gaussian-btn" onclick="setSignal('gaussian')">Gaussian Noise</button>
+        <button onclick="resetSim()">Reset Data</button>
+    </div>
+
+    <div id="canvas-container">
+        <canvas id="simCanvas" width="900" height="450"></canvas>
+    </div>
+
+    <div class="desc">
+        <strong>Watch closely:</strong> The white dot traces the signal in time. Every fraction of a second, it fires a flying sample particle horizontally to the right. When the particle lands, it stacks into the histogram, demonstrating exactly how the wave's velocity shapes the probability density.
+    </div>
+
+    <script>
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Layout boundaries
+        const waveX = 50, waveW = 400;
+        const histX = 550, histW = 300;
+        const centerY = 225, amplitudeRange = 180;
+
+        let signalType = 'sine';
+        let time = 0;
+        let bins = new Array(40).fill(0);
+        let maxBinCount = 1;
+        let particles = [];
+        let waveHistory = [];
+
+        function setSignal(type) {
+            signalType = type;
+            document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+            if(type !== 'reset') document.getElementById(`${type}-btn`).classList.add('active');
+            resetSim();
+        }
+
+        function resetSim() {
+            bins.fill(0);
+            maxBinCount = 1;
+            particles = [];
+            waveHistory = [];
+        }
+
+        // Get value between -1 and 1 based on time and type
+        function getSignalValue(t) {
+            if (signalType === 'sine') {
+                return Math.sin(t * 0.03);
+            } else if (signalType === 'triangle') {
+                // Triangle wave formula bouncing between -1 and 1
+                return (Math.abs((t * 0.015 % 4) - 2) - 1);
+            } else if (signalType === 'gaussian') {
+                // Box-Muller transform for standard normal noise
+                let u = 0, v = 0;
+                while(u === 0) u = Math.random(); 
+                while(v === 0) v = Math.random();
+                let val = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+                return val * 0.35; // scale down slightly to fit plot limits smoothly
+            }
+            return 0;
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            time += 2;
+
+            let currentVal = getSignalValue(time);
+            let currentY = centerY - (currentVal * amplitudeRange);
+
+            // 1. Maintain signal line history tracking
+            waveHistory.push({x: waveX + waveW, y: currentY});
+            if (waveHistory.length > waveW) waveHistory.shift();
+            for(let i=0; i<waveHistory.length; i++) {
+                waveHistory[i].x -= 1; 
+            }
+
+            // Draw grid baselines
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(waveX, centerY); ctx.lineTo(waveX + waveW, centerY);
+            ctx.moveTo(histX, centerY); ctx.lineTo(histX + histW, centerY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw continuous wave
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for(let i=0; i<waveHistory.length; i++) {
+                if(i===0) ctx.moveTo(waveHistory[i].x, waveHistory[i].y);
+                else ctx.lineTo(waveHistory[i].x, waveHistory[i].y);
+            }
+            ctx.stroke();
+
+            // Draw current tracking dot
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(waveX + waveW, currentY, 6, 0, Math.PI*2);
+            ctx.fill();
+
+            // 2. Launch flight particles at periodic intervals
+            if (time % 4 === 0) {
+                particles.push({
+                    x: waveX + waveW,
+                    y: currentY,
+                    val: currentVal,
+                    speed: 15
+                });
+            }
+
+            // 3. Process and draw active flying particles
+            ctx.fillStyle = '#f43f5e';
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.speed;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI*2);
+                ctx.fill();
+
+                // Particle hits the histogram wall
+                if (p.x >= histX) {
+                    // Map value range [-1.2, 1.2] safely onto the index bins
+                    let binIndex = Math.floor(((p.val + 1.2) / 2.4) * bins.length);
+                    if (binIndex >= 0 && binIndex < bins.length) {
+                        bins[binIndex]++;
+                        if (bins[binIndex] > maxBinCount) maxBinCount = bins[binIndex];
+                    }
+                    particles.splice(i, 1);
+                }
+            }
+
+            // 4. Render Horizontal Histogram Bars
+            let binHeight = (amplitudeRange * 2.4) / bins.length;
+            ctx.fillStyle = '#fb923c';
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i < bins.length; i++) {
+                // Convert bin index back to visual coordinate Y position
+                let yPos = centerY + amplitudeRange * 1.2 - (i * binHeight) - binHeight;
+                let barWidth = (bins[i] / maxBinCount) * (histW - 20);
+
+                if (bins[i] > 0) {
+                    ctx.fillRect(histX, yPos, barWidth, binHeight - 1);
+                    ctx.strokeRect(histX, yPos, barWidth, binHeight - 1);
+                }
+            }
+
+            // Labels & Text details
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = '12px sans-serif';
+            ctx.fillText("+1.0 Amplitude", waveX, centerY - amplitudeRange + 15);
+            ctx.fillText("-1.0 Amplitude", waveX, centerY + amplitudeRange - 5);
+            ctx.fillText("Time Domain (Signal)", waveX + 5, 25);
+            ctx.fillText("Amplitude Domain (Histogram / PDF)", histX + 5, 25);
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
