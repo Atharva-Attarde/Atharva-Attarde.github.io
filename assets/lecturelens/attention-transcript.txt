@@ -1,0 +1,65 @@
+Alright, let's look at the top of the page. We have a large diagram here, labeled Figure 1: The Transformer - model architecture.
+
+Let's walk through this visual. This is the blueprint for the entire system. It is split into two main vertical columns.
+
+Look at the left column first. At the very bottom, you see "Inputs" pointing up into a pink box labeled "Input Embedding". Right next to that, there is a small circle with a wave inside it labeled "Positional Encoding". These two paths merge together.
+
+From that merge point, the signal goes up into a large, rounded rectangle. Inside this rectangle, you see a repeating block structure. At the bottom of this block, there is an orange box labeled "Multi-Head Attention". Above that, a yellow box labeled "Add & Norm". Above that, a blue box labeled "Feed Forward". And above that, another yellow "Add & Norm" box. To the left of this entire stack, there is a label "N times", indicating this whole block repeats multiple times.
+
+Now, look at the right column. This is the output side. At the bottom, you see "Outputs shifted right" pointing into a pink box labeled "Output Embedding". This also merges with a "Positional Encoding" circle.
+
+This signal goes up into a similar stack of blocks. But notice, this stack has an extra component. At the bottom, there is an orange box labeled "Masked Multi-Head Attention". Above that, an "Add & Norm" box. Then, there is a second orange box labeled "Multi-Head Attention". Above that, another "Add & Norm". Then a blue "Feed Forward" box, and finally a top "Add & Norm" box. To the right of this stack, there is also a label "N times".
+
+Crucially, look at the arrows connecting the two columns. There is an arrow coming out of the top of the left column's stack and feeding directly into that second "Multi-Head Attention" box in the right column. This is how the input information influences the output generation.
+
+Finally, at the very top of the right column, the signal goes into a gray box labeled "Linear", then into a green box labeled "Softmax", and finally points up to "Output Probabilities".
+
+Now, let's move our eyes down to the text below the figure.
+
+The first paragraph starts mid-sentence, continuing from the previous page. It says: "wise fully connected feed-forward network." This is describing the blue "Feed Forward" boxes we just saw in the diagram.
+
+It continues: "We employ a residual connection around each of the two sub-layers, followed by layer normalization."
+
+This is a key concept. It explains the yellow "Add & Norm" boxes. The text defines the math: "That is, the output of each sub-layer is Layer Norm of x plus Sublayer of x."
+
+Let's break that down. You take the input, x. You pass it through a sub-layer, which is the function implemented by the sub-layer itself. You add the original input, x, to the result of that sub-layer. That is the residual connection. Then, you apply Layer Norm to that sum. This stabilizes the training.
+
+The text adds: "To facilitate these residual connections, all sub-layers in the model, as well as the embedding layers, produce outputs of dimension d-model equals 512." This means every block in that diagram outputs a vector with 512 numbers. This uniform size is what allows you to add the input to the output.
+
+Now, look at the next bold heading: "Decoder:".
+
+The text says: "The decoder is also composed of a stack of N equals 6 identical layers." This confirms the "N times" label on the right side of the diagram.
+
+It continues: "In addition to the two sub-layers in each encoder layer, the decoder inserts a third sub-layer, which performs multi-head attention over the output of the encoder stack."
+
+This explains the extra orange box in the right column of the diagram. The left column is the encoder. The right column is the decoder. The decoder has an extra attention mechanism that looks at the encoder's output.
+
+The text continues: "Similar to the encoder, we employ residual connections around each of the sub-layers, followed by layer normalization." Again, this refers to the "Add & Norm" boxes.
+
+Then it explains the masking: "We also modify the self-attention sub-layer in the decoder stack to prevent positions from attending to subsequent positions."
+
+This is the "Masked Multi-Head Attention" box at the bottom of the right column. Why do we mask it? The text explains: "This masking, combined with fact that the output embeddings are offset by one position, ensures that the predictions for position i can depend only on the known outputs at positions less than i."
+
+In plain English: When the model is predicting the next word, it should not be allowed to cheat by looking at the words that come after it. It can only look at the words that have already been generated. The masking enforces this rule.
+
+Now, let's move to the next major section heading: "3.2 Attention".
+
+The text says: "An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors."
+
+This is the core idea. You have a query. You have a set of keys and values. The function produces an output.
+
+It continues: "The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key."
+
+So, you compare your query to each key. The more compatible they are, the higher the weight. Then you take a weighted sum of the values.
+
+Finally, look at the next sub-heading: "3.2.1 Scaled Dot-Product Attention".
+
+The text says: "We call our particular attention 'Scaled Dot-Product Attention'."
+
+It continues: "The input consists of queries and keys of dimension d-k, and values of dimension d-v."
+
+This tells us the sizes of the vectors. The queries and keys have a dimension called d-k. The values have a dimension called d-v.
+
+The text cuts off at the bottom of the page: "We compute the dot products of the..."
+
+We will pick up from there on the next page.

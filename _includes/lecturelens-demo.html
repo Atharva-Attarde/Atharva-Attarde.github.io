@@ -1,0 +1,425 @@
+<!-- LectureLens Interactive Demo Component -->
+<div class="ll-demo-card">
+  <div class="ll-demo-header">
+    <div class="ll-badge-group">
+      <span class="ll-badge ll-badge-primary">Vision-LLM + Kokoro TTS</span>
+      <span class="ll-badge ll-badge-secondary">100% Local &amp; Private</span>
+      <span class="ll-badge ll-badge-accent">6m 23s Audio Lecture</span>
+    </div>
+    <h2 class="ll-demo-title">LectureLens Live Demo 🎓👁️</h2>
+    <p class="ll-demo-subtitle">
+      Turning the <em>Attention Is All You Need</em> paper into a spoken, professor-guided lecture.
+    </p>
+  </div>
+
+  <div class="ll-demo-grid">
+    <!-- Left: Textbook / Paper Visual Snapshot -->
+    <div class="ll-visual-column">
+      <div class="ll-panel-header">
+        <span class="ll-panel-label">📄 Visual Page Snapshot (200 DPI)</span>
+        <a href="{{ '/assets/lecturelens/attention-page.pdf' | relative_url }}" target="_blank" class="ll-panel-link" title="Open original PDF">Open PDF ↗</a>
+      </div>
+      
+      <div class="ll-image-container">
+        <a href="{{ '/assets/lecturelens/attention-page.png' | relative_url }}" target="_blank" title="Click to view full size">
+          <img 
+            src="{{ '/assets/lecturelens/attention-page.png' | relative_url }}" 
+            onerror="this.onerror=null; this.src='{{ '/assets/lecturelens/sample-page.svg' | relative_url }}';" 
+            alt="Attention Is All You Need - Page 3: Model Architecture & Attention Mechanism"
+            class="ll-textbook-img"
+            id="lecturelens-page-img"
+          />
+        </a>
+        <div class="ll-image-caption">
+          <span>Figure 1: The Transformer Model Architecture &amp; Section 3.2 Attention</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Spoken Audio & Professor Transcript -->
+    <div class="ll-audio-column">
+      <div class="ll-panel-header">
+        <span class="ll-panel-label">🎧 Neural Audio Output</span>
+        <span class="ll-voice-tag">Voice: Kokoro af_heart</span>
+      </div>
+
+      <div class="ll-player-box">
+        <audio controls class="ll-audio-element" id="lecturelens-audio-player" preload="metadata">
+          <source src="{{ '/assets/lecturelens/attention-audio.mp3' | relative_url }}" type="audio/mpeg">
+          <source src="{{ '/assets/lecturelens/page_0001.mp3' | relative_url }}" type="audio/mpeg">
+          Your browser does not support the audio player.
+        </audio>
+
+        <div class="ll-controls-bar">
+          <span class="ll-player-help">💡 Click any topic below to jump to that timestamp:</span>
+          <div class="ll-speed-selector">
+            <label for="speed-select">Speed:</label>
+            <button type="button" class="ll-speed-btn active" onclick="setSpeed(1.0, this)">1.0x</button>
+            <button type="button" class="ll-speed-btn" onclick="setSpeed(1.25, this)">1.25x</button>
+            <button type="button" class="ll-speed-btn" onclick="setSpeed(1.5, this)">1.5x</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Topic Timestamps -->
+      <div class="ll-timestamps">
+        <button type="button" class="ll-time-chip" onclick="seekAudio(0)">⏱️ 0:00 Fig 1 Architecture</button>
+        <button type="button" class="ll-time-chip" onclick="seekAudio(22)">📐 0:22 Encoder Stack</button>
+        <button type="button" class="ll-time-chip" onclick="seekAudio(58)">⚙️ 0:58 Decoder Stack</button>
+        <button type="button" class="ll-time-chip" onclick="seekAudio(126)">⚡ 2:06 Residuals &amp; LayerNorm</button>
+        <button type="button" class="ll-time-chip" onclick="seekAudio(228)">🎯 3:48 Masked Attention</button>
+        <button type="button" class="ll-time-chip" onclick="seekAudio(278)">🔍 4:38 Section 3.2 Attention</button>
+        <button type="button" class="ll-time-chip" onclick="seekAudio(338)">📊 5:38 Scaled Dot-Product</button>
+      </div>
+
+      <!-- Professor Guided Transcript -->
+      <div class="ll-transcript-box">
+        <div class="ll-transcript-header">
+          <strong>🗣️ AI Professor Spoken Transcript:</strong>
+        </div>
+        <div class="ll-transcript-content" id="ll-transcript-text">
+          <p><strong>Alright, let's look at the top of the page.</strong> We have a large diagram here, labeled <em>Figure 1: The Transformer - model architecture</em>.</p>
+          <p>Let's walk through this visual. This is the blueprint for the entire system. It is split into two main vertical columns.</p>
+          <p><strong>Look at the left column first.</strong> At the very bottom, you see <em>"Inputs"</em> pointing up into a pink box labeled <em>"Input Embedding"</em>. Right next to that, there is a small circle with a wave inside it labeled <em>"Positional Encoding"</em>. These two paths merge together.</p>
+          <p>From that merge point, the signal goes up into a large, rounded rectangle. Inside this rectangle, you see a repeating block structure: at the bottom, an orange box labeled <em>"Multi-Head Attention"</em>, above that a yellow <em>"Add &amp; Norm"</em> box, above that a blue <em>"Feed Forward"</em> box, and above that another yellow <em>"Add &amp; Norm"</em> box. To the left, the label <em>"N times"</em> indicates this whole block repeats multiple times.</p>
+          <p><strong>Now, look at the right column.</strong> This is the output side. At the bottom, you see <em>"Outputs (shifted right)"</em> pointing into a pink <em>"Output Embedding"</em> box, which also merges with <em>"Positional Encoding"</em>.</p>
+          <p>This signal goes up into a similar stack of blocks with an extra component: at the bottom is an orange box labeled <em>"Masked Multi-Head Attention"</em>, followed by <em>"Add &amp; Norm"</em>, a second <em>"Multi-Head Attention"</em> box, another <em>"Add &amp; Norm"</em>, a blue <em>"Feed Forward"</em> box, and a top <em>"Add &amp; Norm"</em> box.</p>
+          <p><strong>Crucially, look at the arrows connecting the two columns:</strong> An arrow comes out of the top of the left column's stack and feeds directly into that second <em>"Multi-Head Attention"</em> box in the right column. This is how input information influences output generation.</p>
+          <p>At the very top of the right column, the signal goes into a gray <em>"Linear"</em> box, then into green <em>"Softmax"</em>, and finally points up to <em>"Output Probabilities"</em>.</p>
+          <p><strong>Now, let's move our eyes down to the text below the figure:</strong></p>
+          <p>The text defines the residual math: <em>"That is, the output of each sub-layer is LayerNorm(x + Sublayer(x))."</em> You take input x, pass it through the sub-layer function, add the original x back (the residual connection), and apply Layer Normalization.</p>
+          <p>All sub-layers produce outputs of dimension <em>d_model = 512</em>. The decoder stack repeats for <em>N = 6</em> identical layers.</p>
+          <p><strong>Why is the attention masked?</strong> <em>"This masking, combined with the fact that the output embeddings are offset by one position, ensures that the predictions for position i can depend only on known outputs at positions less than i."</em> In plain English: the model is not allowed to cheat by peeking at future tokens!</p>
+          <p><strong>Section 3.2: Attention.</strong> <em>"An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors."</em></p>
+          <p><strong>Section 3.2.1: Scaled Dot-Product Attention.</strong> The input consists of queries and keys of dimension <em>d_k</em>, and values of dimension <em>d_v</em>...</p>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="ll-actions">
+        <a href="https://github.com/Atharva-Attarde/LectureLens" target="_blank" class="ll-btn ll-btn-primary">
+          ⭐ Star on GitHub (Atharva-Attarde/LectureLens)
+        </a>
+        <a href="{{ '/assets/lecturelens/attention-transcript.txt' | relative_url }}" target="_blank" class="ll-btn ll-btn-outline">
+          📄 Raw Transcript (.txt)
+        </a>
+        <a href="{{ '/assets/lecturelens/attention-page.pdf' | relative_url }}" target="_blank" class="ll-btn ll-btn-outline">
+          📑 Download PDF Page
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function seekAudio(seconds) {
+  var audio = document.getElementById('lecturelens-audio-player');
+  if (audio) {
+    audio.currentTime = seconds;
+    audio.play();
+  }
+}
+
+function setSpeed(speed, btn) {
+  var audio = document.getElementById('lecturelens-audio-player');
+  if (audio) {
+    audio.playbackRate = speed;
+    var btns = document.querySelectorAll('.ll-speed-btn');
+    btns.forEach(function(b) { b.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+  }
+}
+</script>
+
+<style>
+.ll-demo-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  padding: 26px;
+  margin: 28px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #1e293b;
+}
+
+.ll-demo-header {
+  margin-bottom: 22px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 14px;
+}
+
+.ll-badge-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.ll-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.ll-badge-primary {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.ll-badge-secondary {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.ll-badge-accent {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.ll-demo-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  color: #0f172a;
+}
+
+.ll-demo-subtitle {
+  font-size: 1.02rem;
+  color: #475569;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.ll-demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .ll-demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ll-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ll-panel-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+}
+
+.ll-panel-link {
+  font-size: 0.82rem;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.ll-panel-link:hover {
+  text-decoration: underline;
+}
+
+.ll-voice-tag {
+  font-size: 0.78rem;
+  background: #f1f5f9;
+  color: #334155;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.ll-image-container {
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
+}
+
+.ll-textbook-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.2s ease;
+  cursor: zoom-in;
+}
+
+.ll-textbook-img:hover {
+  transform: scale(1.01);
+}
+
+.ll-image-caption {
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.8rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.ll-player-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.ll-audio-element {
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  outline: none;
+}
+
+.ll-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ll-player-help {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.ll-speed-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.ll-speed-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ll-speed-btn:hover {
+  background: #e2e8f0;
+}
+
+.ll-speed-btn.active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.ll-timestamps {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.ll-time-chip {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ll-time-chip:hover {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.ll-transcript-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #3b82f6;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  max-height: 270px;
+  overflow-y: auto;
+}
+
+.ll-transcript-header {
+  font-size: 0.85rem;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.ll-transcript-content {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.ll-transcript-content p {
+  margin: 0 0 10px 0;
+}
+
+.ll-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ll-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 15px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: all 0.15s ease;
+}
+
+.ll-btn-primary {
+  background: #0f172a;
+  color: #ffffff !important;
+}
+
+.ll-btn-primary:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.ll-btn-outline {
+  background: #ffffff;
+  color: #334155 !important;
+  border: 1px solid #cbd5e1;
+}
+
+.ll-btn-outline:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+</style>

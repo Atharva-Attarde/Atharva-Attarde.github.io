@@ -1,0 +1,13 @@
+"Section 2.3: The Discrete-Time Convolution Sum.
+
+Looking at Equation 2.14: y of n equals x of n convolved with h of n, which equals the summation from k equals minus infinity to positive infinity of x of k times h of n minus k.
+
+Now, let's examine Figure 2.8 for the graphical intuition:
+
+In part a, we have our input sequence x of k plotted along the discrete time index k, with nonzero samples starting at index 0.
+
+In part b, we look at our impulse response sequence. Notice how h of k has been reflected across the vertical axis to form h of minus k, and then shifted by n to produce h of n minus k.
+
+Finally, in part c, we perform a point-by-point product of x of k and the shifted sequence h of n minus k. Summing all of these products across k gives us the single output value y of n at index n. Repeating this sliding and summing operation for every integer n sketches out the full system response shown by the green envelope.
+
+Moving down to Section 2.3.1, let's review the algebraic properties..."

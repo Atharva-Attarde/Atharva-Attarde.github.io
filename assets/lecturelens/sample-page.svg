@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1050" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.1"/>
+    </filter>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Page Background -->
+  <rect width="800" height="1050" fill="#ffffff" rx="8"/>
+  <rect x="0" y="0" width="800" height="1050" fill="none" stroke="#e2e8f0" stroke-width="2" rx="8"/>
+
+  <!-- Running Header -->
+  <text x="50" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#64748b" font-weight="600">CHAPTER 2 / LINEAR TIME-INVARIANT SYSTEMS</text>
+  <text x="750" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#64748b" text-anchor="end" font-weight="600">47</text>
+  <line x1="50" y1="55" x2="750" y2="55" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Section Title -->
+  <text x="50" y="95" font-family="Georgia, serif" font-size="22" fill="#0f172a" font-weight="bold">2.3 The Discrete-Time Convolution Sum</text>
+
+  <!-- Column 1 Text Paragraph -->
+  <text x="50" y="130" font-family="Georgia, serif" font-size="13" fill="#334155" line-height="1.6">
+    <tspan x="50" dy="0">Any discrete-time signal can be decomposed as a linear combination of shifted unit</tspan>
+    <tspan x="50" dy="20">impulses δ[n - k]. By virtue of linearity and time-invariance, the system response</tspan>
+    <tspan x="50" dy="20">y[n] to an arbitrary input x[n] is uniquely characterized by its impulse response h[n]:</tspan>
+  </text>
+
+  <!-- Equation Box -->
+  <rect x="50" y="205" width="700" height="75" fill="#f8fafc" rx="6" stroke="#e2e8f0"/>
+  <text x="400" y="248" font-family="'Cambria Math', 'Times New Roman', serif" font-size="21" fill="#1e293b" text-anchor="middle" font-style="italic">
+    y[n] = x[n] * h[n] = <tspan font-style="normal" font-size="26">∑</tspan><tspan font-size="13" dy="10">k=-∞</tspan><tspan font-size="13" dy="-20">∞</tspan><tspan font-size="21" dy="10"> x[k] h[n - k]</tspan>
+  </text>
+  <text x="730" y="248" font-family="Georgia, serif" font-size="14" fill="#475569" text-anchor="end" font-weight="600">(2.14)</text>
+
+  <!-- Explanation Paragraph -->
+  <text x="50" y="315" font-family="Georgia, serif" font-size="13" fill="#334155">
+    <tspan x="50" dy="0">The operation in Eq. (2.14) is known as the convolution sum. As shown in Figure 2.8,</tspan>
+    <tspan x="50" dy="20">evaluating the sum involves four distinct operations: reflecting the sequence h[k] about</tspan>
+    <tspan x="50" dy="20">the origin to yield h[-k], shifting by n, multiplying pointwise by x[k], and summing all terms.</tspan>
+  </text>
+
+  <!-- Figure Box (Diagram Walkthrough) -->
+  <rect x="50" y="400" width="700" height="340" fill="#f8fafc" rx="8" stroke="#cbd5e1" stroke-dasharray="3,3"/>
+  <text x="70" y="428" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" fill="#0f172a" font-weight="bold">Figure 2.8: Graphical Interpretation of Discrete Convolution</text>
+
+  <!-- Panel (a): x[k] -->
+  <g transform="translate(80, 450)">
+    <text x="0" y="15" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#475569" font-weight="600">(a) Input sequence x[k]</text>
+    <line x1="0" y1="60" x2="280" y2="60" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="140" y1="15" x2="140" y2="70" stroke="#94a3b8" stroke-width="1.5"/>
+    <!-- Samples -->
+    <line x1="140" y1="60" x2="140" y2="25" stroke="#2563eb" stroke-width="3"/>
+    <circle cx="140" cy="25" r="4" fill="#2563eb"/>
+    <line x1="165" y1="60" x2="165" y2="35" stroke="#2563eb" stroke-width="3"/>
+    <circle cx="165" cy="35" r="4" fill="#2563eb"/>
+    <line x1="190" y1="60" x2="190" y2="45" stroke="#2563eb" stroke-width="3"/>
+    <circle cx="190" cy="45" r="4" fill="#2563eb"/>
+    <text x="275" y="55" font-family="Georgia, serif" font-size="11" fill="#64748b">k</text>
+    <text x="135" y="75" font-family="sans-serif" font-size="10" fill="#64748b">0</text>
+  </g>
+
+  <!-- Panel (b): h[n-k] -->
+  <g transform="translate(420, 450)">
+    <text x="0" y="15" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#475569" font-weight="600">(b) Time-reversed and shifted h[n-k]</text>
+    <line x1="0" y1="60" x2="280" y2="60" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="140" y1="15" x2="140" y2="70" stroke="#94a3b8" stroke-width="1.5"/>
+    <!-- Samples -->
+    <line x1="140" y1="60" x2="140" y2="30" stroke="#dc2626" stroke-width="3"/>
+    <circle cx="140" cy="30" r="4" fill="#dc2626"/>
+    <line x1="115" y1="60" x2="115" y2="40" stroke="#dc2626" stroke-width="3"/>
+    <circle cx="115" cy="40" r="4" fill="#dc2626"/>
+    <line x1="90" y1="60" x2="90" y2="50" stroke="#dc2626" stroke-width="3"/>
+    <circle cx="90" cy="50" r="4" fill="#dc2626"/>
+    <text x="275" y="55" font-family="Georgia, serif" font-size="11" fill="#64748b">k</text>
+    <text x="135" y="75" font-family="sans-serif" font-size="10" fill="#64748b">n</text>
+  </g>
+
+  <!-- Panel (c): Product and Output y[n] -->
+  <g transform="translate(80, 580)">
+    <text x="0" y="15" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#475569" font-weight="600">(c) Pointwise product x[k]·h[n-k] and convolution output y[n]</text>
+    <line x1="0" y1="80" x2="620" y2="80" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="310" y1="20" x2="310" y2="90" stroke="#94a3b8" stroke-width="1.5"/>
+    <!-- Output Waveform -->
+    <path d="M 180,80 Q 250,30 310,25 T 440,80" fill="none" stroke="#059669" stroke-width="2.5" stroke-dasharray="4,4"/>
+    <line x1="250" y1="80" x2="250" y2="50" stroke="#059669" stroke-width="3"/>
+    <circle cx="250" cy="50" r="4" fill="#059669"/>
+    <line x1="280" y1="80" x2="280" y2="35" stroke="#059669" stroke-width="3"/>
+    <circle cx="280" cy="35" r="4" fill="#059669"/>
+    <line x1="310" y1="80" x2="310" y2="25" stroke="#059669" stroke-width="3"/>
+    <circle cx="310" cy="25" r="4" fill="#059669"/>
+    <line x1="340" y1="80" x2="340" y2="35" stroke="#059669" stroke-width="3"/>
+    <circle cx="340" cy="35" r="4" fill="#059669"/>
+    <line x1="370" y1="80" x2="370" y2="55" stroke="#059669" stroke-width="3"/>
+    <circle cx="370" cy="55" r="4" fill="#059669"/>
+    <text x="615" y="75" font-family="Georgia, serif" font-size="11" fill="#64748b">n</text>
+    <text x="305" y="100" font-family="sans-serif" font-size="10" fill="#64748b">0</text>
+  </g>
+
+  <!-- Section 2.3.1 Two-Column Text -->
+  <text x="50" y="780" font-family="Georgia, serif" font-size="16" fill="#0f172a" font-weight="bold">2.3.1 Properties of the Convolution Operator</text>
+
+  <!-- Left Column -->
+  <text x="50" y="810" font-family="Georgia, serif" font-size="12" fill="#334155">
+    <tspan x="50" dy="0">Commutativity: The order of signals in the</tspan>
+    <tspan x="50" dy="18">convolution does not affect the output:</tspan>
+    <tspan x="80" dy="24" font-style="italic">x[n] * h[n] = h[n] * x[n]</tspan>
+    <tspan x="50" dy="26">Physically, this implies that an input x[n]</tspan>
+    <tspan x="50" dy="18">applied to a filter h[n] yields identical</tspan>
+    <tspan x="50" dy="18">results to input h[n] applied to filter x[n].</tspan>
+  </text>
+
+  <!-- Right Column -->
+  <text x="420" y="810" font-family="Georgia, serif" font-size="12" fill="#334155">
+    <tspan x="420" dy="0">Distributivity over Addition: Convolution</tspan>
+    <tspan x="420" dy="18">is distributive with respect to signal summation:</tspan>
+    <tspan x="440" dy="24" font-style="italic">x[n] * (h₁[n] + h₂[n]) = x[n]*h₁[n] + x[n]*h₂[n]</tspan>
+    <tspan x="420" dy="26">This corresponds directly to two parallel LTI</tspan>
+    <tspan x="420" dy="18">systems excited by the same common source.</tspan>
+  </text>
+
+  <!-- Page Footer -->
+  <line x1="50" y1="990" x2="750" y2="990" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="50" y="1015" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#94a3b8">Signals &amp; Systems, 2nd Edition — Oppenheim &amp; Willsky</text>
+  <text x="750" y="1015" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#94a3b8" text-anchor="end">LectureLens Visual High-DPI Snapshot</text>
+</svg>
