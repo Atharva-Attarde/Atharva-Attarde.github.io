@@ -5,17 +5,15 @@ permalink: /about/
 ---
 
 ### Atharva Attarde
+### Atharva Attarde
 
-<p style="font-size: 14px;">
+<div style="font-size: 18px; line-height: 1.7;">
 
-I am a **PhD Student** in the **[BioMedIA Lab](http://cds.iisc.ac.in/)**, 
-Department of **Computational and Data Sciences (CDS)** at the 
-**Indian Institute of Science (IISc), Bangalore**.
+I am a **PhD Student** in the **[BioMedIA Lab](http://cds.iisc.ac.in/)**, Department of **Computational and Data Sciences (CDS)** at the **Indian Institute of Science (IISc), Bangalore**.
 
-I completed my **B.Tech** in **Computer Science and Engineering** in 2026 
-from **Indian Institute of Information Technology, Dharwad**.
+I completed my **B.Tech** in **Computer Science and Engineering** in 2026 from **Indian Institute of Information Technology, Dharwad**.
 
-</p>
+</div>
 ---
 
 ### Research Interests
