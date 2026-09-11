@@ -6,15 +6,14 @@ permalink: /about/
 
 ### Atharva Attarde
 
-I am a **PhD Student** in the **[BioMedIA Lab](http://cds.iisc.ac.in/)**, Department of **Computational and Data Sciences (CDS)** at the **Indian Institute of Science (IISc), Bangalore**.
+I am a **PhD Student** in the **[BioMedIA Lab](http://cds.iisc.ac.in/)**, Department of **Computational and Data Sciences (CDS)** at the **Indian Institute of Science (IISc), Bangalore**,
 I completed my **B.Tech** in **Computer Science and Engineering** in 2026 from **Indian Institute of Information Technology, Dharwad**.
 ---
 
 ### Research Interests
-* **Multimodal Machine Learning &amp; Vision-Language Models (VLMs)**
-* **Biomedical Image Analysis &amp; Visual Computing**
-* **Digital Image Processing**
-* **Edge AI &amp; Local Inference Systems**
+* **Multimodal Machine Learning**
+* **Biomedical Image Analysis**
+* **Local Inference Systems**
 
 ---
 
